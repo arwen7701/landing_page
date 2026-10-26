@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome, Arwen ✨</title>
+<!--
+  HOW TO EDIT THIS PAGE — you only need this part!
+  -------------------------------------------------
+  1. To add / remove a link: find the FOLDERS list in the <script> at the
+     bottom of this file (search for EDIT HERE).
+  2. Copy a line like this and change the name + url:
+        { name: "My Site", url: "https://example.com", note: "optional note" }
+  3. To add a whole new folder: copy a whole { title: ..., pattern: ..., links: [...] }
+     block. Patterns you can use: "stripes", "dots", "stars", "fish", "bunnies"
+  4. Save the file, then refresh Chrome. That's it — no build step, no server.
+  Weather needs internet. Clock, calendar and the dino game work offline.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f1e7; --card:#fffdf6; --card2:#ece4d5;
+    --terra:#bc473b; --terra-dark:#96342a;
+    --sage:#6a7b5e; --sage-dark:#4e5c43;
+    --slate:#4b5e78; --slate-dark:#36465c;
+    --mustard:#dca644; --rose:#c27d7d;
+    --text:#3a332c; --border:#d5c9b3;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:"Quicksand",sans-serif;
+    background-image:radial-gradient(#e0d5c1 1px, transparent 1px);
+    background-size:34px 34px;
+    padding:28px 18px 130px;
+  }
+  .wrap{max-width:1020px;margin:0 auto}
+  header{text-align:center;margin:6px 0 18px}
+  .eyebrow{font-family:"Playfair Display",serif;font-style:italic;color:var(--slate);font-size:18px}
+  h1{font-family:"Playfair Display",serif;font-size:clamp(38px,6vw,60px);margin:6px 0 4px;line-height:1}
+  h1 em{color:var(--terra)}
+  #clock{font-family:"Comfortaa",sans-serif;color:var(--slate);font-weight:700;letter-spacing:.02em}
+  .search{max-width:580px;margin:20px auto 0;position:relative}
+  .search input{width:100%;padding:15px 110px 15px 46px;border:2px solid var(--border);border-radius:999px;background:rgba(255,255,255,.9);font:600 15px "Quicksand",sans-serif;color:var(--text);outline:none}
+  .search input:focus{border-color:var(--terra);box-shadow:0 0 0 4px rgba(188,71,59,.15)}
+  .search .mag{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px}
+  .search button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:var(--terra);color:#fff;padding:9px 18px;border-radius:999px;font:700 13px "Comfortaa",sans-serif;cursor:pointer}
+  .search button:hover{background:var(--terra-dark)}
+
+  /* Widgets: weather + calendar */
+  .widgets{display:grid;grid-template-columns:1fr 1.15fr;gap:16px;margin:22px 0}
+  @media(max-width:720px){.widgets{grid-template-columns:1fr}}
+  .widget{background:var(--card);border:2px solid var(--border);border-radius:22px;padding:18px 20px;box-shadow:0 4px 0 rgba(58,51,44,.08)}
+  .widget h2{font-family:"Playfair Display",serif;font-size:21px;margin:0 0 10px}
+  .widget h2 span{font-size:18px}
+  #weather-main{font-size:42px;font-weight:700;line-height:1}
+  #weather-main small{font-size:20px}
+  #weather-desc{color:#6b6156;margin-top:4px}
+  #weather-extra{margin-top:10px;font-size:14px;color:#6b6156}
+  .loc-btn{margin-top:12px;border:2px solid var(--border);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer;font:700 12px "Comfortaa",sans-serif}
+  .loc-btn:hover{border-color:var(--terra);color:var(--terra)}
+  .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .cal-head strong{font-family:"Comfortaa",sans-serif}
+  .cal-head button{border:2px solid var(--border);background:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;font-size:13px}
+  .cal-grid .dow{font-weight:700;color:var(--slate);font-size:11px;letter-spacing:.06em;padding-bottom:4px}
+  .cal-grid .day{padding:8px 0;border-radius:10px}
+  .cal-grid .day.empty{background:transparent}
+  .cal-grid .day.today{background:var(--mustard);font-weight:700;box-shadow:inset 0 0 0 2px var(--terra);position:relative}
+  .cal-grid .day.today::after{content:"⭐";position:absolute;top:-9px;right:2px;font-size:11px}
+
+  /* Pinterest-style folders */
+  .section-label{font-family:"Comfortaa",sans-serif;font-weight:700;color:#6b6156;margin:26px 4px 14px;display:flex;align-items:center;gap:8px}
+  .folders{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px}
+  .folder{border:0;background:transparent;cursor:pointer;text-align:left;padding:0;transition:transform .18s ease}
+  .folder:nth-child(odd){transform:rotate(-1.4deg)}
+  .folder:nth-child(even){transform:rotate(1.1deg)}
+  .folder:hover{transform:rotate(0deg) translateY(-4px)}
+  .cover{height:168px;border-radius:22px 22px 8px 8px;border:3px solid #fff;box-shadow:0 6px 14px rgba(58,51,44,.18);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .cover .big{font-size:52px;filter:drop-shadow(0 3px 0 rgba(0,0,0,.12));position:relative;z-index:2}
+  .cover .deco{position:absolute;font-size:22px;opacity:.95;z-index:1}
+  .folder-label{background:#fff;border:2px solid var(--border);border-top:0;border-radius:0 0 18px 18px;padding:11px 14px 12px;margin-top:-2px;box-shadow:0 4px 10px rgba(58,51,44,.10)}
+  .folder-label strong{display:block;font-family:"Playfair Display",serif;font-size:17px;line-height:1.2}
+  .folder-label span{font-size:12px;color:#7a7066}
+  /* Patterns — colorful, but all in the same palette */
+  .pattern-stripes{background:repeating-linear-gradient(90deg,var(--terra) 0 16px,#f6f1e7 16px 32px,var(--mustard) 32px 40px,#f6f1e7 40px 58px)}
+  .pattern-dots{background-color:var(--sage);background-image:radial-gradient(circle,#f6f1e7 6px,transparent 7px),radial-gradient(circle,#dca644 4px,transparent 5px);background-size:30px 30px,30px 30px;background-position:0 0,15px 15px}
+  .pattern-stars{background-color:var(--slate);background-image:radial-gradient(circle,#dca644 2px,transparent 3px);background-size:26px 26px}
+  .pattern-fish{background-color:#7fa8b8;background-image:repeating-linear-gradient(0deg,transparent 0 26px,rgba(255,255,255,.18) 26px 28px)}
+  .pattern-bunnies{background-color:var(--rose);background-image:radial-gradient(circle,rgba(255,255,255,.35) 3px,transparent 4px);background-size:24px 24px}
+
+  /* Open folder panel */
+  #panel{display:none;background:var(--card2);border:2px solid var(--border);border-radius:24px;padding:20px;margin-top:8px;box-shadow:0 6px 0 rgba(58,51,44,.08)}
+  #panel.open{display:block}
+  #panel h2{font-family:"Playfair Display",serif;margin:0 0 4px;font-size:26px}
+  #panel p.sub{margin:0 0 16px;color:#6b6156}
+  .links{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .link-card{display:flex;gap:11px;align-items:center;background:rgba(255,255,255,.85);border:1.5px solid var(--border);border-radius:16px;padding:12px;text-decoration:none;color:var(--text);transition:transform .15s ease, box-shadow .15s ease}
+  .link-card:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(58,51,44,.15);border-color:var(--terra)}
+  .link-card img{width:32px;height:32px;border-radius:8px;flex-shrink:0;background:#fff}
+  .link-card strong{display:block;font-size:14px;line-height:1.25}
+  .link-card span{font-size:12px;color:#7a7066;word-break:break-all}
+  .close-btn{float:right;border:2px solid var(--border);background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font:700 12px "Comfortaa",sans-serif}
+  .empty-note{background:#fff;border:2px dashed var(--border);border-radius:16px;padding:18px;line-height:1.6}
+
+  footer{text-align:center;color:#8a7f74;font-size:13px;margin-top:34px;line-height:1.7}
+  footer code{background:#fff;border:1px solid var(--border);border-radius:6px;padding:1px 6px}
+
+  /* Dino game — bottom corner */
+  #dino{position:fixed;right:16px;bottom:16px;width:330px;max-width:calc(100vw - 32px);background:#fff;border:2px solid var(--border);border-radius:20px;box-shadow:0 10px 24px rgba(58,51,44,.22);overflow:hidden;z-index:50}
+  #dino header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px 6px}
+  #dino header strong{font-family:"Comfortaa",sans-serif;font-size:13px}
+  #dino header button{border:0;background:var(--card2);border-radius:999px;padding:5px 10px;cursor:pointer;font-weight:700}
+  #dino canvas{display:block;width:100%;height:130px;background:linear-gradient(#fdf8ec,#f6f1e7);border-top:2px dashed var(--border);cursor:pointer}
+  #dino .hint{padding:8px 14px 12px;font-size:12px;color:#6b6156;display:flex;justify-content:space-between;gap:8px}
+  #dino .hint button{border:0;background:var(--terra);color:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:700}
+  #dino-min{display:none;position:fixed;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;border:2px solid var(--border);background:#fff;font-size:26px;cursor:pointer;box-shadow:0 8px 20px rgba(58,51,44,.25);z-index:50}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">✨ Cozy Corner Dashboard ✨</div>
+    <h1>Welcome, <em>Arwen</em></h1>
+    <div id="clock">Loading date &amp; time…</div>
+    <form class="search" action="https://www.google.com/search" method="GET">
+      <span class="mag">🔍</span>
+      <input type="text" name="q" placeholder="Search Google or type a web address…" autofocus required>
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <div class="widgets">
+    <section class="widget">
+      <h2>🌤️ Weather</h2>
+      <div id="weather-main">--°</div>
+      <div id="weather-desc">Checking the sky…</div>
+      <div id="weather-extra"></div>
+      <button class="loc-btn" id="loc-btn">📍 Use my location instead</button>
+    </section>
+
+    <section class="widget">
+      <h2>🗓️ This month</h2>
+      <div class="cal-head">
+        <button id="cal-prev" aria-label="Previous month">‹</button>
+        <strong id="cal-title"></strong>
+        <button id="cal-next" aria-label="Next month">›</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </section>
+  </div>
+
+  <div class="section-label">⭐ Your folders — click a cover to open it</div>
+  <div class="folders" id="folders"></div>
+
+  <div id="panel">
+    <button class="close-btn" id="panel-close">✕ Close</button>
+    <h2 id="panel-title"></h2>
+    <p class="sub" id="panel-sub"></p>
+    <div class="links" id="panel-links"></div>
+  </div>
+
+  <footer>
+    To add your own links, open this file in any text editor and search for <code>EDIT HERE</code>.<br>
+    Add a line with a name + web address, save, and refresh this page. No passwords are stored here — these are just links.
+  </footer>
+</div>
+
+<!-- Dino game, bottom corner -->
+<div id="dino">
+  <header><strong>🦖 Tiny Dino — bottom-corner break</strong><button id="dino-min-btn" title="Minimize">–</button></header>
+  <canvas id="dino-canvas" width="660" height="260"></canvas>
+  <div class="hint"><span>Space / ↑ / tap = jump</span><span id="dino-score">Score: 0</span><button id="dino-start">▶ Start</button></div>
+</div>
+<button id="dino-min" title="Open dino game">🦖</button>
+
+<script>
+/* ================= EDIT HERE — YOUR FOLDERS & LINKS =================
+   Copy a { name, url } line to add a link. Copy a whole folder block
+   to add a folder. Patterns: "stripes" "dots" "stars" "fish" "bunnies" */
+const FOLDERS = [
+  {
+    title: "Home: A Place I Can Go",
+    subtitle: "House portals — Pasco, electric, waste & home accounts",
+    pattern: "stripes", emoji: "🏠",
+    links: [
+      { name: "Pasco EasyPay", url: "https://pascoeasypay.pascocountyfl.net/", note: "pascoeasypay.pascocountyfl.net" },
+      { name: "Spectrum — Sign In", url: "https://www.spectrum.net/", note: "spectrum.net — sign in from here" },
+      { name: "Vantaca Home — Inframark", url: "https://home.inframark.com/public", note: "home.inframark.com" },
+      { name: "Withlacoochee Electric — SmartHub", url: "https://withlacoochee.smarthub.coop/ui/#/login", note: "withlacoochee.smarthub.coop" },
+      { name: "Coastal Waste — Payments", url: "https://payments.coastalwasteinc.com/", note: "payments.coastalwasteinc.com" },
+      { name: "Vantaca Home — Hikai", url: "https://home.hikai.com/login", note: "home.hikai.com" }
+    ]
+  },
+  {
+    title: "AI Tools & Assistants",
+    subtitle: "From your earlier draft — edit or delete as you like",
+    pattern: "stars", emoji: "✨",
+    links: [
+      { name: "Gemini", url: "https://gemini.google.com", note: "gemini.google.com" },
+      { name: "ChatGPT", url: "https://chatgpt.com", note: "chatgpt.com" },
+      { name: "Claude AI", url: "https://claude.ai", note: "claude.ai" }
+    ]
+  },
+  {
+    title: "Add Your Own Folder",
+    subtitle: "Your space — replace this title and add links above",
+    pattern: "bunnies", emoji: "🐰",
+    links: []
+  },
+  {
+    title: "Another Folder",
+    subtitle: "Fish on blue, just because — rename me",
+    pattern: "fish", emoji: "🐟",
+    links: []
+  },
+  {
+    title: "Daily Links",
+    subtitle: "Polka dots for the everyday stuff",
+    pattern: "dots", emoji: "🌿",
+    links: []
+  }
+];
+/* ================= END EDIT HERE ================= */
+
+const foldersEl = document.getElementById('folders');
+const panel = document.getElementById('panel');
+const decoByPattern = {
+  stripes: ["⭐","✿"], dots: ["⭐","🐰"],
+  stars: ["⭐","🌙"], fish: ["🐟","🫧"], bunnies: ["🐰","⭐"]
+};
+
+function favicon(url){
+  try { return "https://www.google.com/s2/favicons?domain=" + new URL(url).hostname + "&sz=64"; }
+  catch(e){ return ""; }
+}
+
+FOLDERS.forEach((f, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'folder';
+  const deco = decoByPattern[f.pattern] || ["⭐"];
+  btn.innerHTML =
+    '<div class="cover pattern-' + f.pattern + '">' +
+      '<span class="deco" style="top:14px;left:14px">' + deco[0] + '</span>' +
+      '<span class="deco" style="bottom:16px;right:16px">' + (deco[1] || deco[0]) + '</span>' +
+      '<span class="big">' + f.emoji + '</span>' +
+    '</div>' +
+    '<div class="folder-label"><strong>' + f.title + '</strong>' +
+    '<span>' + f.links.length + (f.links.length === 1 ? ' link' : ' links') + ' — click to open</span></div>';
+  btn.addEventListener('click', () => openFolder(i));
+  foldersEl.appendChild(btn);
+});
+
+function openFolder(i){
+  const f = FOLDERS[i];
+  document.getElementById('panel-title').textContent = f.emoji + '  ' + f.title;
+  document.getElementById('panel-sub').textContent = f.subtitle;
+  const box = document.getElementById('panel-links');
+  box.innerHTML = '';
+  if (!f.links.length){
+    box.innerHTML = '<div class="empty-note">Nothing here yet! Open this file in a text editor, search for <b>EDIT HERE</b>, and add links under “' + f.title + '” like this:<br><code>{ name: "My Site", url: "https://example.com" }</code><br>Save, refresh, and it will show up here.</div>';
+  } else {
+    f.links.forEach(l => {
+      const a = document.createElement('a');
+      a.className = 'link-card'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+      const img = document.createElement('img'); img.src = favicon(l.url); img.alt = '';
+      img.onerror = function(){ this.style.display = 'none'; };
+      a.appendChild(img);
+      const div = document.createElement('div');
+      div.innerHTML = '<strong>' + l.name + '</strong><span>' + (l.note || l.url) + '</span>';
+      a.appendChild(div);
+      box.appendChild(a);
+    });
+  }
+  panel.classList.add('open');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+document.getElementById('panel-close').addEventListener('click', () => panel.classList.remove('open'));
+
+/* Clock */
+function tick(){
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' }) + '  •  ' + now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
+}
+setInterval(tick, 1000); tick();
+
+/* Calendar — current month, with prev / next */
+let calDate = new Date(); calDate.setDate(1);
+function renderCal(){
+  const y = calDate.getFullYear(), m = calDate.getMonth();
+  document.getElementById('cal-title').textContent = calDate.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+  const grid = document.getElementById('cal-grid'); grid.innerHTML = '';
+  ['S','M','T','W','T','F','S'].forEach(d => { const s = document.createElement('div'); s.className = 'dow'; s.textContent = d; grid.appendChild(s); });
+  const firstDow = new Date(y, m, 1).getDay();
+  const days = new Date(y, m + 1, 0).getDate();
+  const today = new Date();
+  for (let i = 0; i < firstDow; i++){ const e = document.createElement('div'); e.className = 'day empty'; grid.appendChild(e); }
+  for (let d = 1; d <= days; d++){
+    const el = document.createElement('div'); el.className = 'day'; el.textContent = d;
+    if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear()) el.classList.add('today');
+    grid.appendChild(el);
+  }
+}
+document.getElementById('cal-prev').addEventListener('click', () => { calDate.setMonth(calDate.getMonth() - 1); renderCal(); });
+document.getElementById('cal-next').addEventListener('click', () => { calDate.setMonth(calDate.getMonth() + 1); renderCal(); });
+renderCal();
+
+/* Weather — Open-Meteo, no key needed. Default: Wesley Chapel, FL (Pasco) */
+const WMO = { 0:['Clear sky','☀️'], 1:['Mainly clear','🌤️'], 2:['Partly cloudy','⛅'], 3:['Overcast','☁️'], 45:['Foggy','🌫️'], 48:['Foggy','🌫️'], 51:['Light drizzle','🌦️'], 53:['Drizzle','🌦️'], 55:['Drizzle','🌦️'], 61:['Light rain','🌧️'], 63:['Rain','🌧️'], 65:['Heavy rain','🌧️'], 71:['Light snow','❄️'], 73:['Snow','❄️'], 75:['Heavy snow','❄️'], 80:['Light showers','🌦️'], 81:['Showers','🌦️'], 82:['Heavy showers','🌦️'], 95:['Thunderstorm','⛈️'], 96:['Thunderstorm','⛈️'], 99:['Thunderstorm','⛈️'] };
+async function loadWeather(lat, lon, label){
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current=temperature_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&wind_speed_unit=mph&forecast_days=2&timezone=auto';
+    const r = await fetch(url); const j = await r.json();
+    const cur = j.current, code = WMO[cur.weather_code] || ['','🌤️'];
+    document.getElementById('weather-main').innerHTML = code[1] + ' ' + Math.round(cur.temperature_2m) + '<small>°F</small>';
+    document.getElementById('weather-desc').textContent = code[0] + ' in ' + label;
+    document.getElementById('weather-extra').textContent = 'Today: ' + Math.round(j.daily.temperature_2m_min[0]) + '° – ' + Math.round(j.daily.temperature_2m_max[0]) + '°  •  Wind ' + Math.round(cur.wind_speed_10m) + ' mph  •  Tomorrow high ' + Math.round(j.daily.temperature_2m_max[1]) + '°';
+  } catch(e){
+    document.getElementById('weather-desc').textContent = 'Weather needs internet — check your connection and refresh.';
+  }
+}
+loadWeather(28.24, -82.35, 'Wesley Chapel, FL');
+document.getElementById('loc-btn').addEventListener('click', () => {
+  if (!navigator.geolocation){ alert('Geolocation is not available in this browser.'); return; }
+  document.getElementById('weather-desc').textContent = 'Finding your location…';
+  navigator.geolocation.getCurrentPosition(
+    p => loadWeather(p.coords.latitude, p.coords.longitude, 'your location'),
+    () => { document.getElementById('weather-desc').textContent = 'Could not get your location — still showing Wesley Chapel, FL.'; }
+  );
+});
+
+/* Tiny Dino — canvas, space / up / tap to jump */
+const cv = document.getElementById('dino-canvas'), ctx = cv.getContext('2d');
+let dino = { x: 60, y: 0, vy: 0, jumping: false };
+let obstacles = [], score = 0, playing = false, raf = null, lastSpawn = 0;
+const GROUND = 210;
+function drawDino(){
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.strokeStyle = '#d5c9b3'; ctx.beginPath(); ctx.moveTo(0, GROUND + 22); ctx.lineTo(cv.width, GROUND + 22); ctx.stroke();
+  ctx.font = '44px serif'; ctx.fillText('🦖', dino.x, GROUND - dino.y);
+  ctx.font = '32px serif';
+  obstacles.forEach(o => ctx.fillText('🌵', o.x, GROUND + 8));
+  if (!playing && score === 0){ ctx.font = '20px Quicksand, sans-serif'; ctx.fillStyle = '#6b6156'; ctx.fillText('Press Start, Space, or tap me!', 200, 70); }
+}
+function loop(ts){
+  if (!playing) return;
+  if (!lastSpawn) lastSpawn = ts;
+  if (ts - lastSpawn > 1300){ obstacles.push({ x: cv.width }); lastSpawn = ts; }
+  obstacles.forEach(o => o.x -= 4 + Math.min(score / 100, 4));
+  obstacles = obstacles.filter(o => o.x > -40);
+  if (dino.jumping){ dino.y += dino.vy; dino.vy -= 1.4; if (dino.y <= 0){ dino.y = 0; dino.jumping = false; } }
+  score += 1;
+  document.getElementById('dino-score').textContent = 'Score: ' + Math.floor(score / 10);
+  const hit = obstacles.some(o => Math.abs(o.x - dino.x) < 42 && dino.y < 30);
+  drawDino();
+  if (hit){
+    playing = false;
+    ctx.font = '22px Quicksand, sans-serif'; ctx.fillStyle = '#bc473b';
+    ctx.fillText('Game over! Press Start to try again.', 150, 70);
+    return;
+  }
+  raf = requestAnimationFrame(loop);
+}
+function startDino(){
+  obstacles = []; score = 0; dino.y = 0; dino.jumping = false; lastSpawn = 0;
+  playing = true; document.getElementById('dino-score').textContent = 'Score: 0';
+  cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
+}
+function jump(){ if (!playing) startDino(); else if (!dino.jumping){ dino.jumping = true; dino.vy = 16; } }
+document.getElementById('dino-start').addEventListener('click', startDino);
+cv.addEventListener('click', jump);
+document.addEventListener('keydown', e => {
+  if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+  if (e.code === 'Space' || e.code === 'ArrowUp'){ e.preventDefault(); jump(); }
+});
+document.getElementById('dino-min-btn').addEventListener('click', () => {
+  document.getElementById('dino').style.display = 'none';
+  document.getElementById('dino-min').style.display = 'block';
+});
+document.getElementById('dino-min').addEventListener('click', () => {
+  document.getElementById('dino').style.display = 'block';
+  document.getElementById('dino-min').style.display = 'none';
+});
+drawDino();
+</script>
+</body>
+</html>
